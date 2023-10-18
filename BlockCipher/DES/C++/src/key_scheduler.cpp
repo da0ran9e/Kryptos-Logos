@@ -2,32 +2,33 @@
 #include "../des/permuted_choice.hpp"
 #include "../des/left_shift.hpp"
 #include "../des/key_scheduler.hpp"
+#include "../des/permutations.hpp"
 using namespace std;
 
-vector<bitset<48>> generateSubKeys(const bitset<64>& key) {
-
-    vector<bitset<48>> subKeys;
+void generate_subkeys(const bitset<64>& key, bitset<48> subKeys[16]) {
     bitset<56> permutedKey = permuted_choice_1(key);
-
-    bitset<28> C0, D0;
-
-    for (int i = 0; i < 28; i++) {
-        C0[i] = permutedKey[i + 28];
-        D0[i] = permutedKey[i];
+    // Split the 56-bit key into two 28-bit halves
+    bitset<28> leftHalf, rightHalf;
+    for (int i = 0; i < 28; ++i) {
+        leftHalf[i] = permutedKey[i];
+        rightHalf[i] = permutedKey[i + 28];
     }
 
-    for (int i = 0; i < 16; i++) {
-        C0 = left_shift(C0, 1);  // Dịch bit trái C0 và D0
-        D0 = left_shift(D0, 1);
+    for (int round = 0; round < 16; ++round) {
+        // Perform left shift on both halves
+        leftHalf = left_shift(leftHalf, shiftBits[round]);
+        rightHalf = left_shift(rightHalf, shiftBits[round]);
 
-        bitset<56> shiftedKey;
-        for (int j = 0; j < 28; j++) {
-            shiftedKey[j] = D0[j];
-            shiftedKey[j + 28] = C0[j];
+        // Combine the two halves
+        bitset<56> combinedKey;
+        for (int i = 0; i < 28; ++i) {
+            combinedKey[i] = leftHalf[i];
+            combinedKey[i + 28] = rightHalf[i];
         }
-        
-        subKeys.push_back(permuted_choice_2(shiftedKey));
-    }
 
-    return subKeys;
+        // Apply PC2 to the combined key to get the 48-bit round key
+        
+        subKeys[round] = permuted_choice_2(combinedKey);
+        
+    }
 }
