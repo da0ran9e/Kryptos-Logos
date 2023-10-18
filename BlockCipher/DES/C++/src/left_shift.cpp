@@ -1,7 +1,11 @@
 #include <bits/stdc++.h>
 #include "../des/left_shift.hpp"
-using namespace std;
 
-bitset<28> leftShift(const std::bitset<28>& key, int shift) {
-    return (key << shift) | (key >> (28 - shift));
+std::bitset<28> left_shift(const std::bitset<24>& key, int shift) {
+    std::bitset<28> data = key;
+    for (int i = 0; i < 28; ++i) {
+        int newPos = (i + shift) % 28;
+        data[newPos] = key[i];
+    }
+    return data;
 }
