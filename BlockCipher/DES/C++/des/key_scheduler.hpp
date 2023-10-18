@@ -4,6 +4,6 @@
 #include <bitset>
 #include <vector>
 
-std::bitset<48> generate_subkeys(const std::bitset<64>& key);
+void generate_subkeys(const std::bitset<64>& key, std::bitset<48> subKeys[16]);
 
 #endif
