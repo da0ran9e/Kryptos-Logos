@@ -1,6 +1,7 @@
 #include "../des/initial_permutation.hpp"
 #include "../des/key_scheduler.hpp"
 #include "../des/f_function.hpp"
+#include "../des/encrypt.hpp"
 
 std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
     data = initialPermutation(data);
