@@ -1,29 +1,37 @@
 CXX = g++
-CXXFLAGS = -std=c++11
-INC_DIR = -I./des
-SRC_DIR = src
-BUILD_DIR = build
-BIN_DIR = bin
-TARGET = my_program
+CXXFLAGS = -std=c++11 -I./des
 
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
-MAIN = main.cpp
+# Source file directories
+SRCDIR = src
+DESDIR = des
 
-all: $(BIN_DIR)/$(TARGET)
+# Object file directory
+BUILDDIR = build
 
-$(BIN_DIR)/$(TARGET): $(OBJECTS) $(BUILD_DIR)/$(MAIN:.cpp=.o)
-	$(CXX) $(CXXFLAGS) $(INC_DIR) $^ -o $@
+# List of source files
+SOURCES = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(DESDIR)/*.cpp) main.cpp
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $(INC_DIR) -c $< -o $@
+# List of object files
+OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
-$(BUILD_DIR)/$(MAIN:.cpp=.o): $(MAIN)
-	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $(INC_DIR) -c $< -o $@
+# Output executable
+EXECUTABLE = myprogram
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(EXECUTABLE)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(DESDIR)/%.hpp | $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILDDIR)/%.o: $(DESDIR)/%.cpp $(DESDIR)/%.hpp | $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
 
 clean:
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -rf $(BUILDDIR) $(EXECUTABLE)
 
 .PHONY: all clean
