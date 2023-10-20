@@ -35,12 +35,12 @@ std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
         encryptedData[i + 32] = rightHalf[i];
     }
 
-    // encryptedData = finalPermutation(encryptedData);
+    encryptedData = finalPermutation(encryptedData);
 
-    std::bitset<64> permutedData;
-    for (int i = 0; i < 64; ++i) {
-        permutedData[i] = encryptedData[finalPermutationTable[i] - 1];
-    }
+    // std::bitset<64> permutedData;
+    // for (int i = 0; i < 64; ++i) {
+    //     permutedData[i] = encryptedData[finalPermutationTable[i] - 1];
+    // }
     
-    return permutedData;
+    return encryptedData;
 }
