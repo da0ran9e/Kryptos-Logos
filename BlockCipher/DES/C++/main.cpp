@@ -12,10 +12,10 @@ int main() {
     bitset<64> encryptedData = encryptDES(data, originalKey);
     bitset<64> decryptedData = decryptDES(encryptedData, originalKey);
 
-    cout << "Original data: " << hex << data.to_ullong() << endl;
-    cout << "Original key: " << hex << originalKey.to_ullong() << endl;
-    cout << "Encrypted data: " << hex << encryptedData.to_ullong() << endl;
-    cout << "Decrypted data: " << hex << decryptedData.to_ullong() << endl;
+    cout << "Data: \t\t" << hex << data.to_ullong() << "\t\t" << data << endl;
+    cout << "Key: \t\t" << hex << originalKey.to_ullong() << "\t\t" << originalKey << endl;
+    cout << "Encrypted: \t" << hex << encryptedData.to_ullong() << "\t" << encryptedData << endl;
+    cout << "Decrypted: \t" << hex << decryptedData.to_ullong() << "\t" << decryptedData << endl;
 
     return 0;
 }
