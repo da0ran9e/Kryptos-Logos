@@ -35,11 +35,11 @@ std::bitset<64> decryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
         decryptedData[i + 32] = leftHalf[i];
     }
 
-    //decryptedData = initialPermutation(decryptedData);
-    std::bitset<64> permutedData;
-    for (int i = 0; i < 64; ++i) {
-        permutedData[i] = decryptedData[initialPermutationTable[i] - 1];
-    }
+    decryptedData = initialPermutation(decryptedData);
+    // std::bitset<64> permutedData;
+    // for (int i = 0; i < 64; ++i) {
+    //     permutedData[i] = decryptedData[initialPermutationTable[i] - 1];
+    // }
 
-    return permutedData;
+    return decryptedData;
 }
