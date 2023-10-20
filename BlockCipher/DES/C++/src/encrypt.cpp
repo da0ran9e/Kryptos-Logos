@@ -1,7 +1,10 @@
+#include <iostream>
 #include "../des/initial_permutation.hpp"
+#include "../des/final_permutation.hpp"
 #include "../des/key_scheduler.hpp"
 #include "../des/f_function.hpp"
 #include "../des/encrypt.hpp"
+#include "../des/permutations.hpp"
 
 std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
     data = initialPermutation(data);
@@ -18,6 +21,8 @@ std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
 
     // 16 rounds
     for (int round = 0; round < 16; ++round) {
+        std::cout << "L: " << leftHalf << " R: " << rightHalf << " K: " << subKeys[round] << std::endl;
+
         std::bitset<32> tempRight = rightHalf;
         rightHalf = leftHalf ^ f(rightHalf, subKeys[round]);
         leftHalf = tempRight;
@@ -30,5 +35,12 @@ std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
         encryptedData[i + 32] = rightHalf[i];
     }
 
-    return encryptedData;
+    // encryptedData = finalPermutation(encryptedData);
+
+    std::bitset<64> permutedData;
+    for (int i = 0; i < 64; ++i) {
+        permutedData[i] = encryptedData[finalPermutationTable[i] - 1];
+    }
+    
+    return permutedData;
 }
