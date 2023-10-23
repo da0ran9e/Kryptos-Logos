@@ -7,7 +7,9 @@
 #include "../des/permutations.hpp"
 
 std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
+    std::cout << "data: " << data;
     data = initialPermutation(data);
+    std::cout << "--IP-->" << data << std::endl;
     // Left half and right half initialization
     std::bitset<32> leftHalf, rightHalf;
     for (int i = 0; i < 32; ++i) {
@@ -35,7 +37,9 @@ std::bitset<64> encryptDES(std::bitset<64> data, std::bitset<64> originalKey) {
         encryptedData[i + 32] = rightHalf[i];
     }
 
+    std::cout << "data: " << encryptedData;
     encryptedData = finalPermutation(encryptedData);
+    std::cout << "--IP-->" << encryptedData << std::endl;
 
     // std::bitset<64> permutedData;
     // for (int i = 0; i < 64; ++i) {
