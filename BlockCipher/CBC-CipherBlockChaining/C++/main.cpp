@@ -1,16 +1,16 @@
 #include <iostream>
-#include "des/encrypt.hpp"
-#include "des/decrypt.hpp"
+#include "cbc/plaintext_processor.hpp"
+#include "cbc/CBC.hpp"
+#include "cbc/keys.hpp"
 
 using namespace std;
 
 int main() {
-    bitset<64> data(0x0123456789ABCDEF); // 64-bit data
+    bitset<124> data(0x0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ);
     bitset<64> originalKey(0x0123456789ABCDEF); // 64-bit original key
 
     // Perform DES encryption
-    bitset<64> encryptedData = encryptDES(data, originalKey);
-    bitset<64> decryptedData = decryptDES(encryptedData, originalKey);
+    bitset<64> encryptedData = encryptCBC(data, originalKey, initialVector);
 
     cout << "Data: \t\t" << hex << data.to_ullong() << "\t\t" << data << endl;
     cout << "Key: \t\t" << hex << originalKey.to_ullong() << "\t\t" << originalKey << endl;
