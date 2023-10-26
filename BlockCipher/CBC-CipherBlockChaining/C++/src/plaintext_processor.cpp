@@ -1,6 +1,6 @@
 #include <bitset>
 #include <vector>
-#include <../cbc/plaintext_processor.hpp>
+#include "../cbc/plaintext_processor.hpp"
 
 // if the plaintext length is not divisible by 64 
 std::string padPlaintext(std::string plaintext) {
