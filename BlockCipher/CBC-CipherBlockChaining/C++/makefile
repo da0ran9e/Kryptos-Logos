@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++11 -I./des
 
 # Source file directories
 SRCDIR = src
-DESDIR = des
+DESDIR = cbc
 
 # Object file directory
 BUILDDIR = build
