@@ -15,7 +15,7 @@ SOURCES = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(DESDIR)/*.cpp) main.cpp
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
 # Output executable
-EXECUTABLE = myprogram
+EXECUTABLE = crypto
 
 all: $(EXECUTABLE)
 
