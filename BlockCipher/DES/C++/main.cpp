@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-    bitset<64> data(0x0123456789ABCDEF); // 64-bit data
+    bitset<64> data(string("01000011011000010110110100110000001100100011011000110110")); // 64-bit data
     bitset<64> originalKey(0x0123456789ABCDEF); // 64-bit original key
 
     // Perform DES encryption
