@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include "../des/left_shift.hpp"
 
 std::bitset<28> left_shift(const std::bitset<28>& key, int shift) {
