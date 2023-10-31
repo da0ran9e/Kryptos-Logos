@@ -318,7 +318,7 @@ vector<bitset<64>> splitPlaintext(string plaintext) {
     return blocks;
 }
 
-vector<bitset<64>> encryptCBC(vector<bitset<64>> plaintext, bitset<64> IV, bitset<64> originalKey) {
+vector<bitset<64>> encryptCBC(vector<bitset<64>> plaintext, bitset<64> originalKey, bitset<64> IV) {
     vector<bitset<64>> ciphertext;
 
     //initialize the first block with Initial Vector
