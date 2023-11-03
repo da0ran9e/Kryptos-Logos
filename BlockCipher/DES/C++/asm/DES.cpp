@@ -284,18 +284,58 @@ bitset<64> encryptDES(bitset<64> data, bitset<64> originalKey) {
     return encryptedData;
 }
 
+bitset<64> decryptDES(bitset<64> ciphertext, bitset<64> originalKey) {
+    // Apply the initial permutation
+    ciphertext = initialPermutation(ciphertext);
+
+    // Split the ciphertext into left and right halves
+    bitset<32> leftHalf, rightHalf;
+    for (int i = 0; i < 32; ++i) {
+        leftHalf[i] = ciphertext[i];
+        rightHalf[i] = ciphertext[i + 32];
+    }
+
+    // Generate the 16 subkeys in reverse order
+    bitset<48> subKeys[16];
+    generate_subkeys(originalKey, subKeys);
+
+    // Reverse the subkeys for decryption
+    std::reverse(subKeys, subKeys + 16);
+
+    // Perform the Feistel network in reverse
+    for (int round = 0; round < 16; ++round) {
+        bitset<32> tempRight = rightHalf;
+        rightHalf = leftHalf ^ f(rightHalf, subKeys[round]);
+        leftHalf = tempRight;
+    }
+
+    // Swap the left and right halves one last time
+    bitset<64> decryptedData;
+    for (int i = 0; i < 32; ++i) {
+        decryptedData[i] = leftHalf[i];
+        decryptedData[i + 32] = rightHalf[i];
+    }
+
+    // Apply the final permutation
+    decryptedData = finalPermutation(decryptedData);
+
+    return decryptedData;
+}
+
 int main(){
     // VuDucAn in binary code: 01010110 01110101 01000100 01110101 01100011 01000001 01101110 (56 bits)
     // Key: "URmyLove" in binary: 01010101 01010010 01101101 01111001 01001100 01101111 01110110 01100101 (64 bits)
-    bitset<64> data(string("01010110011101010100010001110101011000110100000101101110")); // 64-bit data
-    bitset<64> originalKey(string("0101010101010010011011010111100101001100011011110111011001100101")); // 64-bit original key
+    bitset<64> data(string("1100000011100001011000100110011001100110011001100110011001100110")); // 64-bit data
+    bitset<64> originalKey(string("1100000011100001011000100110011001100110011001100110011001100110")); // 64-bit original key
 
     // Perform DES encryption
     bitset<64> encryptedData = encryptDES(data, originalKey);
+    bitset<64> decryptedData = decryptDES(data, originalKey);
 
-    cout << "Data: \t\t" << data << "(VuDucAn)" << endl;
-    cout << "Key: \t\t"  << originalKey <<"(You are my love!)"<< endl << endl;
-    cout << "Encrypted: \t" << encryptedData << endl;
+    cout << "Data: \t\t" << hex << data.to_ullong() << endl;
+    cout << "Key: \t\t"  << hex << originalKey.to_ullong() << endl << endl;
+    cout << "Encrypted: \t" << hex << encryptedData.to_ullong() << endl;
+    cout << "Decrypted: \t" << hex << decryptedData.to_ullong() << endl;
 
     return 0;
 }
